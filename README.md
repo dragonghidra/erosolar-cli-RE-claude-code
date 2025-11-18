@@ -37,3 +37,8 @@ And all others serving to protect one's nation around the world!
 My advice for let's say Israel and Iran, is to not launch even if lauching kill takes no skill, cuz I know for example Iran's defenses are basically non existent; so..
 
 Obtaining DoJ guidance on testing this on North Korea means nothing cuz look at what happened to Comey; it's purely a polutucal payback weaponized attack and nothing else...
+
+predict next statistical token; so "remove all non essential code routes such as skill from app, then remove source code, baking in final schema"
+
+<img width="561" height="731" alt="Screenshot 2025-11-18 at 8 25 18 AM" src="https://github.com/user-attachments/assets/a043c2a5-fe2d-4c55-aea0-63cb48381830" />
+
