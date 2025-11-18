@@ -13,3 +13,7 @@ At this point, it's actually incredibly boring to manage, and could 100% easily,
 So boring...
 
 ![RE3](https://github.com/user-attachments/assets/7729c83a-3de7-4915-8aa6-d13db43b711c)
+
+# already on backend hooks; nasty; finish soon! like 2 hours full auto no human required?
+
+<img width="616" height="839" alt="Screenshot 2025-11-18 at 6 29 10 AM" src="https://github.com/user-attachments/assets/cc45bc0d-c094-4f57-b3a4-3c46eb70f0e2" />
