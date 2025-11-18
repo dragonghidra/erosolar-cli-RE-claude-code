@@ -19,3 +19,13 @@ So boring...
 # already on backend hooks; nasty; finish soon! like 2 hours full auto no human required?
 
 <img width="616" height="839" alt="Screenshot 2025-11-18 at 6 29 10 AM" src="https://github.com/user-attachments/assets/cc45bc0d-c094-4f57-b3a4-3c46eb70f0e2" />
+
+So you run "implement as much more advanced or optimal features or design found in claud-code into Erosolar CLI" whatever times let's say 5 auto accepting every premission request, then you run an npm i -g . and see if there's any lint errors. If so fix then back to the 5x loop, or if not run the 5x loop, until finished!
+
+# Please Enjoy!
+
+[https://www.cybercom.mil/](https://www.cybercom.mil/)
+
+[https://eng.chinamil.com.cn/](https://eng.chinamil.com.cn/)
+
+And all others serving to protect one's nation around the world!
