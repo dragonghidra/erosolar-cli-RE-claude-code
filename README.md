@@ -35,3 +35,5 @@ And all others serving to protect one's nation around the world!
 [https://www.anthropic.com/news/disrupting-AI-espionage](https://www.anthropic.com/news/disrupting-AI-espionage)
 
 My advice for let's say Israel and Iran, is to not launch even if lauching kill takes no skill, cuz I know for example Iran's defenses are basically non existent; so..
+
+Obtaining DoJ guidance on testing this on North Korea means nothing cuz look at what happened to Comey; it's purely a polutucal payback weaponized attack and nothing else...
