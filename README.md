@@ -29,3 +29,5 @@ So you run "implement as much more advanced or optimal features or design found 
 [https://eng.chinamil.com.cn/](https://eng.chinamil.com.cn/)
 
 And all others serving to protect one's nation around the world!
+
+[https://www.anthropic.com/news/disrupting-AI-espionage](https://www.anthropic.com/news/disrupting-AI-espionage)
