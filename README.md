@@ -33,3 +33,5 @@ So you run "implement as much more advanced or optimal features or design found 
 And all others serving to protect one's nation around the world!
 
 [https://www.anthropic.com/news/disrupting-AI-espionage](https://www.anthropic.com/news/disrupting-AI-espionage)
+
+My advice for let's say Israel and Iran, is to not launch even if lauching kill takes no skill, cuz I know for example Iran's defenses are basically non existent; so..
