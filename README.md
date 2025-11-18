@@ -2,6 +2,7 @@
 
 This RE, after manually implementation the correct strategy, is incredibly boring because 100% of edits work properly afterwards, achieving full Claude Code parity in a modular way with minimal human intervention needed.
 
+# For agentic orchestration offense beats defense entirely so this is entirely hilarious for me; I’m open sourcing this version but using genai to generate agents to run for any task as the product
 
 ![RE](https://github.com/user-attachments/assets/80abe238-11bb-4fa8-bec1-c54c6f13f252)
 
