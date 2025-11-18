@@ -6,6 +6,8 @@ This RE, after manually implementation the correct strategy, is incredibly borin
 
 I was well aware of what the APT kill chain was before reading this https://www.anthropic.com/news/disrupting-AI-espionage and afterwards I had to open source the thing I wanted to offer as schema so any LLM could generate a template then run any AGI task, provided you connected the accounts you need, in minutes https://ero.solar
 
+# When you accidentally discover a manhattan project, only after reading that article, you have to open source for max global safety; there's no other valid choice.
+
 ![RE](https://github.com/user-attachments/assets/80abe238-11bb-4fa8-bec1-c54c6f13f252)
 
 At this point, it's actually incredibly boring to manage, and could 100% easily, so easily, be done fully autonomously with AI.
