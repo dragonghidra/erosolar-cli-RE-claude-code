@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp.cjs
+.pnp.data.json
+
+# Build output
+dist/
+build/
+tmp/
+temp/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+firepit-log.txt
+
+# Coverage and diagnostic artifacts
+coverage/
+.nyc_output/
+.sentrycli/
+
+# Environment and credentials
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# IDE and OS metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Misc cache
+.eslintcache
+.ts-node-cache/
+.ts-node/
+.cache/
