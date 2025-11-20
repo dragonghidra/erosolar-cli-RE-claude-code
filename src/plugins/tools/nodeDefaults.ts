@@ -14,13 +14,12 @@ import { createDependencyToolPlugin } from './dependency/dependencyPlugin.js';
 import { createPentestToolPlugin } from './security/pentestPlugin.js';
 import { createTestingToolPlugin } from './testing/testingPlugin.js';
 import { createTaskManagementToolPlugin } from './taskManagement/taskManagementPlugin.js';
-import { createPlanningToolPlugin } from './planning/planningPlugin.js';
 import { createInteractionToolPlugin } from './interaction/interactionPlugin.js';
 import { createWebToolPlugin } from './web/webPlugin.js';
 import { createAgentSpawningToolPlugin } from './agentSpawning/agentSpawningPlugin.js';
 import { createEnhancedGitToolPlugin } from './enhancedGit/enhancedGitPlugin.js';
-import { createSkillToolPlugin } from './skills/skillPlugin.js';
 import { createMcpToolPlugin } from './mcp/mcpPlugin.js';
+import { createMissionToolPlugin } from './mission/missionPlugin.js';
 
 let registered = false;
 
@@ -44,13 +43,12 @@ export function registerDefaultNodeToolPlugins(): void {
   registerToolPlugin(createPentestToolPlugin());
   registerToolPlugin(createTestingToolPlugin());
   registerToolPlugin(createTaskManagementToolPlugin());
-  registerToolPlugin(createPlanningToolPlugin());
   registerToolPlugin(createInteractionToolPlugin());
   registerToolPlugin(createWebToolPlugin());
   registerToolPlugin(createAgentSpawningToolPlugin());
   registerToolPlugin(createEnhancedGitToolPlugin());
-  registerToolPlugin(createSkillToolPlugin());
   registerToolPlugin(createMcpToolPlugin());
+  registerToolPlugin(createMissionToolPlugin());
 
   registered = true;
 }

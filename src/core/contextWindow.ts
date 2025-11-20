@@ -7,6 +7,8 @@ const MODEL_CONTEXT_WINDOWS: Array<{ pattern: RegExp; tokens: number }> = [
   { pattern: /sonnet-4[-.]?5/i, tokens: 200_000 },
   { pattern: /opus-4[-.]?1/i, tokens: 200_000 },
   { pattern: /haiku-4[-.]?5/i, tokens: 200_000 },
+  { pattern: /^deepseek[-_]?reasoner/i, tokens: 131_072 },
+  { pattern: /^deepseek[-_]?chat/i, tokens: 64_000 },
 ];
 
 /**

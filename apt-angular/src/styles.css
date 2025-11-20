@@ -157,6 +157,7 @@
 
   .chat-feed {
     @apply flex flex-col gap-4;
+    padding-bottom: 5.5rem;
   }
 
   .chat-message {

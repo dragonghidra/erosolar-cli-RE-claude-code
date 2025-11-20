@@ -66,8 +66,6 @@ import {
   loadCustomSlashCommands,
   type LoadedCustomCommand,
 } from '../core/customCommands.js';
-import { SkillRepository } from '../skills/skillRepository.js';
-import { createSkillTools } from '../tools/skillTools.js';
 
 export interface ShellConfig {
   profile: ProfileName;
@@ -143,8 +141,6 @@ interface SlashCommandDefinition {
   description: string;
 }
 
-type SkillToolHandler = (args: Record<string, unknown>) => Promise<string> | string;
-
 // Load MODEL_PRESETS from centralized schema
 const MODEL_PRESETS: ModelPreset[] = getModels().map((model) => ({
   id: model.id,
@@ -203,8 +199,6 @@ export class InteractiveShell {
   private pendingCleanup: Promise<void> | null = null;
   private cleanupInProgress = false;
   private slashPreviewVisible = false;
-  private readonly skillRepository: SkillRepository;
-  private readonly skillToolHandlers = new Map<string, SkillToolHandler>();
   private thinkingMode: ThinkingMode = 'balanced';
   private readonly agentMenu: AgentSelectionConfig | null;
   private readonly slashCommands: SlashCommandDefinition[];
@@ -268,13 +262,6 @@ export class InteractiveShell {
 
     this.statusTracker = config.statusTracker;
     this.uiAdapter = config.uiAdapter;
-    this.skillRepository = new SkillRepository({
-      workingDir: this.workingDir,
-      env: process.env,
-    });
-    for (const definition of createSkillTools({ repository: this.skillRepository })) {
-      this.skillToolHandlers.set(definition.name, definition.handler);
-    }
 
     this.rl = readline.createInterface({
       input,
@@ -852,9 +839,6 @@ export class InteractiveShell {
       case '/sessions':
         await this.handleSessionCommand(input);
         break;
-      case '/skills':
-        await this.handleSkillsCommand(input);
-        break;
       case '/thinking':
         this.handleThinkingCommand(input);
         break;
@@ -1082,89 +1066,6 @@ export class InteractiveShell {
         );
         return;
     }
-  }
-
-  private async handleSkillsCommand(input: string): Promise<void> {
-    const raw = input.slice('/skills'.length).trim();
-    const tokens = raw ? raw.split(/\s+/).filter(Boolean) : [];
-    let refresh = false;
-    const filtered: string[] = [];
-    for (const token of tokens) {
-      if (token === '--refresh' || token === '-r') {
-        refresh = true;
-        continue;
-      }
-      filtered.push(token);
-    }
-
-    let mode = filtered.shift()?.toLowerCase() ?? 'list';
-    if (mode === 'refresh') {
-      refresh = true;
-      mode = 'list';
-    }
-
-    try {
-      switch (mode) {
-        case '':
-        case 'list': {
-          const query = filtered.join(' ');
-          const output = await this.invokeSkillTool('ListSkills', {
-            query: query || undefined,
-            refresh_cache: refresh,
-          });
-          display.showSystemMessage(output);
-          break;
-        }
-        case 'show':
-        case 'view': {
-          const identifier = filtered.shift();
-          if (!identifier) {
-            display.showWarning('Usage: /skills show <skill-id> [sections=metadata,body]');
-            return;
-          }
-          let sectionsArg: string | undefined;
-          for (let i = 0; i < filtered.length; i += 1) {
-            const token = filtered[i];
-            if (!token) {
-              continue;
-            }
-            if (token.startsWith('sections=')) {
-              sectionsArg = token.slice('sections='.length);
-              filtered.splice(i, 1);
-              break;
-            }
-          }
-          const sections = sectionsArg
-            ? sectionsArg
-                .split(',')
-                .map((section) => section.trim())
-                .filter(Boolean)
-            : undefined;
-          const output = await this.invokeSkillTool('Skill', {
-            skill: identifier,
-            sections,
-            refresh_cache: refresh,
-          });
-          display.showSystemMessage(output);
-          break;
-        }
-        default:
-          display.showWarning('Usage: /skills [list|refresh|show <id> [sections=a,b]]');
-          break;
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      display.showError(`Skill command failed: ${message}`);
-    }
-  }
-
-  private async invokeSkillTool(name: string, args: Record<string, unknown>): Promise<string> {
-    const handler = this.skillToolHandlers.get(name);
-    if (!handler) {
-      throw new Error(`Skill tool "${name}" is not registered.`);
-    }
-    const result = await handler(args);
-    return typeof result === 'string' ? result : JSON.stringify(result, null, 2);
   }
 
   private handleThinkingCommand(input: string): void {

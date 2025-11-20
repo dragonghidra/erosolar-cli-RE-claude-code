@@ -98,36 +98,7 @@
             ></app-chat-message>
           </div>
 
-          <form
-            class="input-bar"
-            (submit)="onSubmitCommand($event)"
-            autocomplete="off"
-          >
-            <span class="prompt-user">you</span>
-            <span class="prompt-symbol">$</span>
-            <input
-              class="input-field"
-              type="text"
-              name="command"
-              placeholder="Type here to talk to APT CLI..."
-              [value]="commandText()"
-              (input)="onCommandInput($event)"
-              [disabled]="sendingCommand()"
-            />
-            <button
-              class="send-button"
-              type="submit"
-              [disabled]="sendingCommand() || !commandText().trim()"
-            >
-              {{ sendingCommand() ? 'sending...' : 'send' }}
-            </button>
-          </form>
-          <p
-            class="input-error"
-            *ngIf="commandError() as cmdError"
-          >
-            {{ cmdError }}
-          </p>
+          <app-chat-input></app-chat-input>
         </div>
       </section>
 

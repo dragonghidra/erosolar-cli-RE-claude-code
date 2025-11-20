@@ -5,6 +5,7 @@ import { RunBoardComponent } from './components/run-board/run-board';
 import { ConnectorGalleryComponent } from './components/connector-gallery/connector-gallery';
 import { ChatMessageHostComponent } from './components/chat-message/chat-message-host';
 import { SettingsDrawerComponent } from './components/settings/settings-drawer';
+import { ChatInputComponent } from './components/chat-input/chat-input';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { SettingsDrawerComponent } from './components/settings/settings-drawer';
     RunBoardComponent,
     ConnectorGalleryComponent,
     ChatMessageHostComponent,
+    ChatInputComponent,
     SettingsDrawerComponent
   ],
   templateUrl: './app.html',
@@ -30,36 +32,9 @@ export class App {
   protected readonly status = this.session.status;
   protected readonly isLoading = this.session.isLoading;
   protected readonly errorMessage = this.session.errorMessage;
-  protected readonly commandText = signal('');
-  protected readonly sendingCommand = signal(false);
-  protected readonly commandError = signal<string | null>(null);
   protected readonly passphraseDraft = signal(this.session.passphrase());
   protected readonly passphraseStatus = signal<string | null>(null);
   protected readonly drawerOpen = signal(false);
-
-  protected onCommandInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.commandText.set(value);
-  }
-
-  protected async onSubmitCommand(event?: Event): Promise<void> {
-    event?.preventDefault();
-    const text = this.commandText().trim();
-    if (!text || this.sendingCommand()) {
-      return;
-    }
-
-    this.sendingCommand.set(true);
-    try {
-      await this.session.sendCommand({ text });
-      this.commandText.set('');
-      this.commandError.set(null);
-    } catch (error) {
-      this.commandError.set(this.describeError(error));
-    } finally {
-      this.sendingCommand.set(false);
-    }
-  }
 
   private describeError(error: unknown): string {
     if (error instanceof Error) {

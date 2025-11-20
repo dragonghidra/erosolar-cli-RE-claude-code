@@ -10,7 +10,11 @@ import type { ProviderId, ReasoningEffortLevel, TextVerbosityLevel } from '../co
 import { createProvider, type ProviderConfig } from '../providers/providerFactory.js';
 import { AgentRuntime, type AgentCallbacks } from '../core/agent.js';
 import { registerDefaultProviderPlugins } from '../plugins/providers/index.js';
-import { createDefaultContextManager, ContextManager } from '../core/contextManager.js';
+import {
+  createDefaultContextManager,
+  ContextManager,
+  resolveContextManagerConfig,
+} from '../core/contextManager.js';
 
 export interface AgentSessionOptions {
   profile: ProfileName;
@@ -54,7 +58,9 @@ export class AgentSession {
     };
 
     // Create context manager to prevent token limit leaks
-    const contextManager = createDefaultContextManager();
+    const contextManager = createDefaultContextManager(
+      resolveContextManagerConfig(profileConfig.model)
+    );
 
     const toolSuites = options.toolSuites ? [...options.toolSuites] : [];
     const toolRuntime = createDefaultToolRuntime(
@@ -114,6 +120,7 @@ export class AgentSession {
   updateToolContext(selection: ModelSelection): void {
     this.state.toolContext.provider = selection.provider;
     this.state.toolContext.model = selection.model;
+    this.state.contextManager.updateConfig(resolveContextManagerConfig(selection.model));
   }
 
   refreshWorkspaceContext(workspaceContext: string | null): ResolvedProfileConfig {

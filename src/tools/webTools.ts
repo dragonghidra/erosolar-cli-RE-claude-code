@@ -72,6 +72,7 @@ Summary: This is the content fetched from the URL. In a full implementation, thi
       name: 'WebSearch',
       description: `- Allows Claude to search the web and use the results to inform responses
 - Provides up-to-date information for current events and recent data
+- Providers: Tavily (preferred when TAVILY_API_KEY is set), Brave Search, or SerpAPI fallback
 - Returns search result information formatted as search result blocks
 - Use this tool for accessing information beyond Claude's knowledge cutoff
 - Searches are performed automatically within a single API call
@@ -117,7 +118,7 @@ Usage notes:
           const provider = resolveSearchProvider();
           if (!provider) {
             return [
-              'WebSearch requires either BRAVE_SEARCH_API_KEY or SERPAPI_API_KEY.',
+              'WebSearch requires TAVILY_API_KEY (preferred), BRAVE_SEARCH_API_KEY, or SERPAPI_API_KEY.',
               'Run /secrets (or set the environment variables directly) to configure an API key.',
             ].join('\n');
           }
@@ -143,6 +144,15 @@ Usage notes:
 }
 
 function resolveSearchProvider(): SearchProvider | null {
+  const tavilyKey = process.env['TAVILY_API_KEY']?.trim();
+  if (tavilyKey) {
+    return {
+      id: 'tavily',
+      label: 'Tavily',
+      search: (params) => performTavilySearch(params, tavilyKey),
+    };
+  }
+
   const braveKey = process.env['BRAVE_SEARCH_API_KEY']?.trim();
   if (braveKey) {
     return {
@@ -214,6 +224,52 @@ async function performSerpApiSearch(params: SearchParams, apiKey: string): Promi
       snippet: entry.snippet || (Array.isArray(entry.snippet_highlighted_words) ? entry.snippet_highlighted_words.join(' ') : ''),
       source: entry.source || entry.display_link || entry.displayed_link || safeHostname(entry.link) || undefined,
       published: entry.date || entry.snippet_date,
+    }))
+    .filter((result) => Boolean(result.url));
+
+  return applyDomainFilters(mapped, params.allowedDomains, params.blockedDomains).slice(0, params.maxResults);
+}
+
+async function performTavilySearch(params: SearchParams, apiKey: string): Promise<WebSearchResult[]> {
+  const body: TavilySearchRequest = {
+    api_key: apiKey,
+    query: params.query,
+    max_results: Math.min(Math.max(params.maxResults, 1), 15),
+    search_depth: 'advanced',
+    include_answer: false,
+    include_images: false,
+    include_image_descriptions: false,
+  };
+
+  if (params.allowedDomains.length) {
+    body.include_domains = params.allowedDomains;
+  }
+  if (params.blockedDomains.length) {
+    body.exclude_domains = params.blockedDomains;
+  }
+
+  const response = await fetch('https://api.tavily.com/search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Tavily returned HTTP ${response.status}`);
+  }
+
+  const payload = (await response.json()) as TavilySearchResponse;
+  const entries = Array.isArray(payload?.results) ? payload.results : [];
+  const mapped = entries
+    .map((entry) => ({
+      title: entry.title || entry.url,
+      url: entry.url,
+      snippet: entry.content || entry.description || '',
+      source: safeHostname(entry.url) || undefined,
+      published: entry.published_date || entry.published || entry.date,
     }))
     .filter((result) => Boolean(result.url));
 
@@ -340,6 +396,30 @@ interface SerpApiResponse {
   }>;
 }
 
+interface TavilySearchRequest {
+  api_key: string;
+  query: string;
+  max_results?: number;
+  search_depth?: 'basic' | 'advanced';
+  include_answer?: boolean;
+  include_images?: boolean;
+  include_image_descriptions?: boolean;
+  include_domains?: string[];
+  exclude_domains?: string[];
+}
+
+interface TavilySearchResponse {
+  results?: Array<{
+    title?: string;
+    url: string;
+    content?: string;
+    description?: string;
+    published?: string;
+    published_date?: string;
+    date?: string;
+  }>;
+}
+
 interface WebSearchResult {
   title: string;
   url: string;
@@ -356,7 +436,7 @@ interface SearchParams {
 }
 
 interface SearchProvider {
-  id: 'brave' | 'serpapi';
+  id: 'tavily' | 'brave' | 'serpapi';
   label: string;
   search: (params: SearchParams) => Promise<WebSearchResult[]>;
 }

@@ -28,7 +28,5 @@ export {
   TestingCapabilityModule,
   type TestingCapabilityOptions,
 } from './testingCapability.js';
-export { PlanningCapabilityModule } from './planningCapability.js';
-export { SkillCapabilityModule } from './skillCapability.js';
 export { McpCapabilityModule } from './mcpCapability.js';
 export { PentestCapabilityModule, type PentestCapabilityOptions } from './pentestCapability.js';

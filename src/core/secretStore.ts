@@ -9,6 +9,7 @@ export type SecretName =
   | 'DEEPSEEK_API_KEY'
   | 'XAI_API_KEY'
   | 'GEMINI_API_KEY'
+  | 'TAVILY_API_KEY'
   | 'BRAVE_SEARCH_API_KEY'
   | 'SERPAPI_API_KEY';
 
@@ -59,6 +60,13 @@ const SECRET_DEFINITIONS: SecretDefinition[] = [
     description: 'Required to run Gemini 2.5 Pro or Flash models.',
     envVar: 'GEMINI_API_KEY',
     providers: ['google'],
+  },
+  {
+    id: 'TAVILY_API_KEY',
+    label: 'Tavily API Key',
+    description: 'Optional: preferred WebSearch provider.',
+    envVar: 'TAVILY_API_KEY',
+    providers: [],
   },
   {
     id: 'BRAVE_SEARCH_API_KEY',

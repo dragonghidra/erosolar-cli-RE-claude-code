@@ -14,6 +14,7 @@ import type {
   ToolCapability,
 } from '../contracts/v1/agent.js';
 import { AGENT_CONTRACT_VERSION } from '../contracts/v1/agent.js';
+import { MissionManager } from '../core/missionManager.js';
 
 interface EventSinkRef {
   current: EventStream<AgentEventUnion> | null;
@@ -193,11 +194,13 @@ export class AgentController implements IAgentController {
   private agent: ReturnType<AgentSession['createAgent']> | null = null;
   private cachedHistory: ConversationMessage[] = [];
   private selection: ModelSelection;
+  private readonly missionManager: MissionManager;
 
   constructor(dependencies: AgentControllerDependencies) {
     this.session = dependencies.runtime.session;
     this.sinkRef = dependencies.sinkRef;
     this.selection = this.buildInitialSelection();
+    this.missionManager = new MissionManager();
   }
 
   private buildInitialSelection(): ModelSelection {
@@ -287,40 +290,82 @@ export class AgentController implements IAgentController {
     }
   }
 
-  async *send(message: string): AsyncIterableIterator<AgentEventUnion> {
-    if (this.activeSink) {
-      throw new Error('Agent runtime is already processing a message. Please wait for the current run to finish.');
-    }
+  private async *runAgentTurn(message: string): AsyncGenerator<AgentEventUnion> {
     const agent = this.ensureAgent();
-    const sink = new EventStream<AgentEventUnion>();
-    this.activeSink = sink;
-    this.sinkRef.current = sink;
-    sink.push({ type: 'message.start', timestamp: Date.now() });
-
     const run = agent
       .send(message, true)
       .then(() => {
         this.updateCachedHistory();
-        sink.close();
+        this.activeSink?.close();
       })
       .catch((error) => {
         const messageText = error instanceof Error ? error.message : String(error);
         this.emitError(messageText);
-        sink.fail(error instanceof Error ? error : new Error(messageText));
+        this.activeSink?.fail(error instanceof Error ? error : new Error(messageText));
       })
       .finally(() => {
-        if (this.activeSink === sink) {
+        if (this.activeSink === this.sinkRef.current) {
           this.activeSink = null;
           this.sinkRef.current = null;
         }
       });
 
     try {
-      for await (const event of sink) {
-        yield event;
+      if (this.activeSink) {
+        for await (const event of this.activeSink) {
+          yield event;
+        }
       }
     } finally {
       await run;
+    }
+  }
+
+  async *send(message: string): AsyncIterableIterator<AgentEventUnion> {
+    if (this.activeSink) {
+      throw new Error('Agent runtime is already processing a message. Please wait for the current run to finish.');
+    }
+
+    const sink = new EventStream<AgentEventUnion>();
+    this.activeSink = sink;
+    this.sinkRef.current = sink;
+    sink.push({ type: 'message.start', timestamp: Date.now() });
+
+    // Initial user message is processed here.
+    // If the user sets a mission, the autonomous loop will start.
+    yield* this.runAgentTurn(message);
+
+    // Autonomous loop
+    while (this.missionManager.getState() !== 'IDLE' && this.missionManager.getState() !== 'DONE') {
+      const state = this.missionManager.getState();
+      const mission = this.missionManager.getMission();
+      let nextPrompt = '';
+
+      if (state === 'PLANNING') {
+        nextPrompt = `My mission is: "${mission}". I need to create a plan to achieve this mission. I will use the CreatePlan tool.`;
+      } else if (state === 'EXECUTING') {
+        const task = this.missionManager.getCurrentTask();
+        if (task) {
+          nextPrompt = `My mission is: "${mission}". My current task is: "${task}". I will now take the next action to complete this task. When the task is complete, I will use the CompleteTask tool.`;
+        } else {
+          // Plan is complete, go back to planning.
+          this.missionManager.setPlan([]); // Resets state to PLANNING
+          nextPrompt = `My mission is: "${mission}". I have completed my previous plan. I now need to create a new plan to continue working on the mission, or declare the mission complete.`;
+        }
+      }
+
+      if (nextPrompt) {
+        // Create a new sink for this turn of the loop
+        const loopSink = new EventStream<AgentEventUnion>();
+        this.activeSink = loopSink;
+        this.sinkRef.current = loopSink;
+        loopSink.push({ type: 'message.start', timestamp: Date.now() });
+        
+        yield* this.runAgentTurn(nextPrompt);
+      } else {
+        // Should not happen, but as a safeguard.
+        break;
+      }
     }
   }
 

@@ -142,15 +142,6 @@
       "pluginIds": ["tool.task-management.local"]
     },
     {
-      "id": "planning",
-      "label": "Workflow planning",
-      "description": "Planning phase management and workflow structuring tools.",
-      "defaultEnabled": true,
-      "category": "core",
-      "scopes": ["planning:workflow"],
-      "pluginIds": ["tool.planning"]
-    },
-    {
       "id": "interaction",
       "label": "User interaction",
       "description": "Interactive question and clarification tools for gathering user preferences and decisions.",
@@ -162,20 +153,11 @@
     {
       "id": "web",
       "label": "Web tools",
-      "description": "Web content fetching and search tools for accessing online information and documentation.",
+      "description": "Web content fetching and search tools (Tavily/Brave/SerpAPI) for accessing online information and documentation.",
       "defaultEnabled": true,
       "category": "analysis",
       "scopes": ["web:fetch", "web:search"],
       "pluginIds": ["tool.web.local"]
-    },
-    {
-      "id": "skills",
-      "label": "Skill library",
-      "description": "Discover and load Claude Skill packages (SKILL.md) to reuse domain-specific workflows and policies.",
-      "defaultEnabled": true,
-      "category": "analysis",
-      "scopes": ["analysis:knowledge"],
-      "pluginIds": ["tool.skills.loader"]
     },
     {
       "id": "mcp",

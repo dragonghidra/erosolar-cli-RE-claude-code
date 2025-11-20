@@ -9,6 +9,7 @@
  */
 
 import type { ConversationMessage } from './types.js';
+import { getContextWindowTokens } from './contextWindow.js';
 
 export interface ContextManagerConfig {
   maxTokens: number; // Maximum tokens allowed in conversation
@@ -34,7 +35,7 @@ export class ContextManager {
       targetTokens: 100000, // Target to trigger pruning
       maxToolOutputLength: 10000, // 10k chars max per tool output
       preserveRecentMessages: 10, // Keep last 10 user/assistant exchanges
-      estimatedCharsPerToken: 4,
+      estimatedCharsPerToken: 3, // Conservative estimate for code-heavy contexts
       ...config,
     };
   }
@@ -276,15 +277,36 @@ export class ContextManager {
   }
 }
 
+const DEFAULT_CONTEXT_HEADROOM = 0.97;
+const DEFAULT_TARGET_RATIO = 0.75;
+
+/**
+ * Derives a context manager configuration based on the active model's context window.
+ */
+export function resolveContextManagerConfig(model: string | null | undefined): Partial<ContextManagerConfig> {
+  const windowTokens = getContextWindowTokens(model);
+  if (!windowTokens) {
+    return {};
+  }
+
+  const maxTokens = Math.max(1000, Math.floor(windowTokens * DEFAULT_CONTEXT_HEADROOM));
+  const targetTokens = Math.max(500, Math.floor(maxTokens * DEFAULT_TARGET_RATIO));
+
+  return { maxTokens, targetTokens };
+}
+
 /**
  * Create a default context manager instance
  */
-export function createDefaultContextManager(): ContextManager {
+export function createDefaultContextManager(
+  overrides: Partial<ContextManagerConfig> = {}
+): ContextManager {
   return new ContextManager({
     maxTokens: 130000, // Safe limit below 131072
     targetTokens: 100000, // Start pruning at 100k
     maxToolOutputLength: 8000, // 8k chars max
     preserveRecentMessages: 8, // Keep last 8 exchanges
-    estimatedCharsPerToken: 4, // Conservative estimate
+    estimatedCharsPerToken: 3, // Conservative estimate for code-heavy text
+    ...overrides,
   });
 }
