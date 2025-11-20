@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { createNodeRuntime } from '../runtime/node.js';
 import type { CapabilityContext } from '../runtime/agentHost.js';
@@ -10,6 +9,7 @@ import type { ToolPlugin } from '../plugins/tools/index.js';
 import type { ModelSelection } from '../runtime/agentSession.js';
 import type { AssistantMessageMetadata } from '../core/agent.js';
 import type { ConversationMessage } from '../core/types.js';
+import { resolveTasksDir } from '../core/brand.js';
 
 type TaskModelName = 'sonnet' | 'opus' | 'haiku';
 
@@ -82,7 +82,7 @@ const MODEL_ID_LOOKUP: Record<TaskModelName, { provider: string; model: string }
   haiku: { provider: 'anthropic', model: 'claude-haiku-4.5' },
 };
 
-const TASK_STORE_DIR = join(homedir(), '.erosolar', 'tasks');
+const TASK_STORE_DIR = resolveTasksDir();
 
 export class TaskRunner {
   private readonly context: CapabilityContext;

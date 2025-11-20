@@ -169,7 +169,7 @@ test('agentSchemaLoader - isValidModel validates correctly', () => {
 
 test('agentSchemaLoader - isValidProfile validates correctly', () => {
   assert.ok(isValidProfile('general'), 'General should be a valid profile');
-  assert.ok(isValidProfile('erosolar-code'), 'Erosolar Code should be a valid profile');
+  assert.ok(isValidProfile('apt-code'), 'APT Code should be a valid profile');
   assert.ok(!isValidProfile('unknown-profile'), 'Unknown profile should not be valid');
 });
 

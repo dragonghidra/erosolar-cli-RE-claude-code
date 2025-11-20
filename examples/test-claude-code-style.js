@@ -10,7 +10,7 @@ async function sleep(ms) {
 }
 
 async function demonstrateClaudeCodeStyle() {
-  console.log('\n🎨 Erosolar CLI - Claude Code Style Demo\n');
+  console.log('\n🎨 APT CLI - Claude Code Style Demo\n');
 
   const display = new Display();
 
@@ -19,8 +19,8 @@ async function demonstrateClaudeCodeStyle() {
   console.log('1. WELCOME BANNER (Claude Code Style)');
   console.log('═'.repeat(60));
   display.showWelcome(
-    'Erosolar Max',
-    'erosolar-code',
+    'APT Max',
+    'apt-code',
     'deepseek-reasoner',
     'deepseek',
     '/Users/bo/GitHub/tools_second_refactor',

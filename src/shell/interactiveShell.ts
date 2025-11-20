@@ -538,8 +538,8 @@ export class InteractiveShell {
         'https://www.anthropic.com/news/disrupting-AI-espionage',
         '',
         `Email ${highlightedEmail} with any bugs or feedback`,
-        'GitHub: https://github.com/dragonghidra/erosolar-cli-RE-claude-code',
-        'npm: https://www.npmjs.com/package/erosolar-cli',
+        'GitHub: https://github.com/dragonghidra/apt-cli-RE-claude-code',
+        'npm: https://www.npmjs.com/package/apt-cli',
       ].join('\n');
       display.showInfo(infoMessage);
       exit(0);

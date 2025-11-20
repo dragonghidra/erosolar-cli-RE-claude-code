@@ -3,7 +3,7 @@ import { stdin as input, stdout as output } from 'node:process';
 import { createInterface } from 'node:readline/promises';
 import { display } from '../ui/display.js';
 
-const PACKAGE_NAME = 'erosolar-cli';
+const PACKAGE_NAME = 'apt-cli';
 const REGISTRY_URL = `https://registry.npmjs.org/${PACKAGE_NAME}/latest`;
 const FETCH_TIMEOUT_MS = 4000;
 
@@ -20,7 +20,7 @@ export async function maybeOfferCliUpdate(currentVersion: string): Promise<boole
 
     display.showInfo(
       [
-        `A new Erosolar CLI release is available.`,
+        `A new APT CLI release is available.`,
         `Current version: ${currentVersion}`,
         `Latest version: ${latestVersion}`,
       ].join('\n')

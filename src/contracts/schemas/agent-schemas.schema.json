@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://erosolar.ai/schemas/agent-schemas.schema.json",
+  "$id": "https://apt.ai/schemas/agent-schemas.schema.json",
   "title": "Agent Schemas Configuration",
   "description": "Centralized schema for all agent configurations, models, providers, and capabilities",
   "type": "object",

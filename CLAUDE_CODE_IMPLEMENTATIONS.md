@@ -1,9 +1,9 @@
 # Claude Code Advanced Features - Implementation Summary
 
-This document outlines the advanced Claude Code features that have been successfully implemented in Erosolar CLI, bringing it to feature parity and beyond with Claude Code.
+This document outlines the advanced Claude Code features that have been successfully implemented in APT CLI, bringing it to feature parity and beyond with Claude Code.
 
 **Implementation Date:** November 18, 2025
-**Version:** Erosolar CLI 1.0.6+
+**Version:** APT CLI 1.0.6+
 **Status:** Production-Ready
 
 ---
@@ -25,7 +25,7 @@ This document outlines the advanced Claude Code features that have been successf
 
 ### Platform Enhancements
 - **Session persistence & autosave** powered by the new session store + `/sessions` command set
-- **Custom slash commands** loaded from `~/.erosolar/commands/*.json` with template tokens
+- **Custom slash commands** loaded from `~/.apt/commands/*.json` with template tokens
 - **Provider-backed WebSearch** using Brave Search (preferred) or SerpAPI with domain filtering and metadata
 - **Model Context Protocol loader** that discovers `.mcp.json` definitions locally and globally
 
@@ -485,7 +485,7 @@ Ready to proceed? If you approve this plan, I will begin implementation.
 **Features:**
 - Deterministic runtime spawning via the same modular adapter system used by the CLI.
 - Automatic tool usage narration so operators can audit the sub-agent’s actions.
-- Resumable transcripts stored under `~/.erosolar/tasks/task_<uuid>.json`.
+- Resumable transcripts stored under `~/.apt/tasks/task_<uuid>.json`.
 - Usage metadata (duration + token counts) surfaced in the final report.
 
 ### 8. MCP Connectors - Model Context Protocol Bridge
@@ -494,7 +494,7 @@ Ready to proceed? If you approve this plan, I will begin implementation.
 **Files Created:** `src/mcp/config.ts`, `src/mcp/stdioClient.ts`, `src/mcp/toolBridge.ts`, `src/capabilities/mcpCapability.ts`, `src/plugins/tools/mcp/mcpPlugin.ts`
 
 **Highlights:**
-- Discovers `.mcp.json` files in the workspace, `.erosolar/mcp.d/*.json`, `~/.erosolar/mcp*.json`, or paths declared in `EROSOLAR_MCP_CONFIG`.
+- Discovers `.mcp.json` files in the workspace, `.apt/mcp.d/*.json`, `~/.apt/mcp*.json`, or paths declared in `APT_MCP_CONFIG`.
 - Spawns stdio transports, performs JSON-RPC/Content-Length framing, and exposes each remote tool as `mcp__<server>__<tool>`.
 - Automatically tears down child processes when the runtime exits and surfaces stderr output when MCP servers fail.
 
@@ -518,12 +518,12 @@ Ready to proceed? If you approve this plan, I will begin implementation.
 
 **Benefits:**
 - Instantly mirrors Claude Code’s MCP story—connectors ship with the repo instead of living in handwritten docs.
-- Built-in variable expansion (`${WORKSPACE_ROOT}`, `${EROSOLAR_HOME}`, `${MCP_CONFIG_DIR}`, plus process env) keeps configs portable.
+- Built-in variable expansion (`${WORKSPACE_ROOT}`, `${APT_HOME}`, `${MCP_CONFIG_DIR}`, plus process env) keeps configs portable.
 - Tool suites update automatically whenever an MCP server emits `tools/list_changed`.
 
-## 📊 Feature Comparison: Erosolar CLI vs Claude Code
+## 📊 Feature Comparison: APT CLI vs Claude Code
 
-| Feature | Claude Code | Erosolar CLI | Status |
+| Feature | Claude Code | APT CLI | Status |
 |---------|-------------|--------------|--------|
 | **Edit Tool** | ✅ | ✅ | Fully Implemented |
 | **NotebookEdit** | ✅ | ✅ | Fully Implemented |
@@ -556,7 +556,7 @@ Ready to proceed? If you approve this plan, I will begin implementation.
 
 ## 🏗️ Architecture Integration
 
-All new tools follow Erosolar CLI's three-layer architecture:
+All new tools follow APT CLI's three-layer architecture:
 
 ### Layer 1: Tool Implementation (`src/tools/`)
 Pure functions that create `ToolDefinition[]` arrays with:
@@ -631,7 +631,7 @@ const tools = await toolRegistry.getAvailableTools();
 Use the tool toggle system:
 
 ```bash
-erosolar
+apt
 > /tools
 
 # Uncheck any tool suite to disable
@@ -692,7 +692,7 @@ npm run quality-gate
 
 ## 🧵 Session Persistence + Autosave
 
-- **Storage layer**: `src/core/sessionStore.ts` now writes transcripts + metadata to `~/.erosolar/sessions/*.json` with an indexed manifest.
+- **Storage layer**: `src/core/sessionStore.ts` now writes transcripts + metadata to `~/.apt/sessions/*.json` with an indexed manifest.
 - **Preferences**: `src/core/preferences.ts` keeps `autosave`, `autoResume`, and `lastSessionId` flags so every profile resumes the exact thread it left off.
 - **Shell UX**: `/sessions list|save|load|delete|new|autosave|clear` mirrors Claude Code's session manager and exposes autosave toggles inline.
 - **Autosave hook**: The interactive shell captures history after every assistant response and persists it when autosave is enabled (default).
@@ -778,7 +778,7 @@ npm run quality-gate
 
 ## ✅ Summary
 
-Erosolar CLI now includes **all major Claude Code tools** for file operations, searching, background process management, and workflow planning. The implementation follows Erosolar's modular architecture, maintaining compatibility with all existing features while adding powerful new capabilities.
+APT CLI now includes **all major Claude Code tools** for file operations, searching, background process management, and workflow planning. The implementation follows APT's modular architecture, maintaining compatibility with all existing features while adding powerful new capabilities.
 
 **Key Achievements:**
 - 🎯 **8 new tool suites** fully implemented
@@ -794,7 +794,7 @@ Erosolar CLI now includes **all major Claude Code tools** for file operations, s
 - **15+ tool definitions** added
 - **100% Claude Code tool parity** achieved (excluding MCP/Task/Thinking)
 
-The Erosolar CLI is now positioned as a **fully-featured alternative to Claude Code** with additional flexibility through its modular architecture and multi-provider support.
+The APT CLI is now positioned as a **fully-featured alternative to Claude Code** with additional flexibility through its modular architecture and multi-provider support.
 
 ---
 

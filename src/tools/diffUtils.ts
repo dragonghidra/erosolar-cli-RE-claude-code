@@ -46,7 +46,7 @@ export function formatDiffLines(diff: DiffSegment[]): string[] {
 function tryBuildWithGit(before: string, after: string): DiffSegment[] | null {
   let tempDir: string | null = null;
   try {
-    tempDir = mkdtempSync(join(tmpdir(), 'erosolar-diff-'));
+    tempDir = mkdtempSync(join(tmpdir(), 'apt-diff-'));
     const originalPath = join(tempDir, 'before.txt');
     const updatedPath = join(tempDir, 'after.txt');
     writeFileSync(originalPath, before, 'utf8');

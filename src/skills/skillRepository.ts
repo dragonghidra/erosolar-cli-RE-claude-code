@@ -3,6 +3,7 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { homedir } from 'node:os';
 import { globSync } from 'glob';
 import type { SkillRecord, SkillRepositoryOptions, SkillResourceEntry, SkillSource, SkillSummary } from './types.js';
+import { pickBrandEnv, resolveSkillSearchDirs } from '../core/brand.js';
 
 const SKILL_FILE_NAME = 'SKILL.md';
 const DEFAULT_IGNORES = [
@@ -14,8 +15,6 @@ const DEFAULT_IGNORES = [
   '**/coverage/**',
   '**/.cache/**',
 ];
-
-const DEFAULT_SKILL_DIRS = ['skills', '.claude/skills', '.erosolar/skills'];
 
 interface SearchRoot {
   path: string;
@@ -127,9 +126,10 @@ export class SkillRepository {
   private collectSearchRoots(): SearchRoot[] {
     const roots: SearchRoot[] = [];
     let priority = 1000;
+    const defaultDirs = resolveSkillSearchDirs(this.env);
 
     // Workspace-relative defaults
-    for (const dir of DEFAULT_SKILL_DIRS) {
+    for (const dir of defaultDirs) {
       roots.push({
         path: resolve(this.workingDir, dir),
         source: 'workspace',
@@ -146,8 +146,8 @@ export class SkillRepository {
       priority: priority--,
     });
 
-    // Home directories (~/.claude/skills, ~/.erosolar/skills)
-    for (const dir of DEFAULT_SKILL_DIRS) {
+    // Home directories (~/.claude/skills, ~/.apt/skills, legacy APT locations)
+    for (const dir of defaultDirs) {
       roots.push({
         path: resolve(this.homeDir, dir),
         source: 'home',
@@ -157,7 +157,7 @@ export class SkillRepository {
     }
 
     // Custom directories from env
-    const envDirs = (this.env['EROSOLAR_SKILLS_DIRS'] ?? '')
+    const envDirs = (pickBrandEnv(this.env, 'SKILLS_DIRS') ?? '')
       .split(process.platform === 'win32' ? ';' : ':')
       .map((value) => value.trim())
       .filter(Boolean);
@@ -298,11 +298,13 @@ export class SkillRepository {
     if (segments.length <= 1) {
       return null;
     }
-    return segments
-      .slice(0, segments.length - 1)
-      .map((segment) => toSlug(segment))
-      .filter(Boolean)
-      .join(':');
+
+    const namespaceSegments = segments.slice(0, segments.length - 1).map((segment) => toSlug(segment));
+    if (namespaceSegments[namespaceSegments.length - 1] === 'skills') {
+      namespaceSegments.pop();
+    }
+
+    return namespaceSegments.filter(Boolean).join(':') || null;
   }
 
   private safeRelative(base: string, target: string): string | null {

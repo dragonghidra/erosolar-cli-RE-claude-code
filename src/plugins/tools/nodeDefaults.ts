@@ -11,6 +11,7 @@ import { createDevToolPlugin } from './development/devPlugin.js';
 import { createCodeQualityToolPlugin } from './codeQuality/codeQualityPlugin.js';
 import { createRefactoringToolPlugin } from './refactoring/refactoringPlugin.js';
 import { createDependencyToolPlugin } from './dependency/dependencyPlugin.js';
+import { createPentestToolPlugin } from './security/pentestPlugin.js';
 import { createTestingToolPlugin } from './testing/testingPlugin.js';
 import { createTaskManagementToolPlugin } from './taskManagement/taskManagementPlugin.js';
 import { createPlanningToolPlugin } from './planning/planningPlugin.js';
@@ -40,6 +41,7 @@ export function registerDefaultNodeToolPlugins(): void {
   registerToolPlugin(createCodeQualityToolPlugin());
   registerToolPlugin(createRefactoringToolPlugin());
   registerToolPlugin(createDependencyToolPlugin());
+  registerToolPlugin(createPentestToolPlugin());
   registerToolPlugin(createTestingToolPlugin());
   registerToolPlugin(createTaskManagementToolPlugin());
   registerToolPlugin(createPlanningToolPlugin());

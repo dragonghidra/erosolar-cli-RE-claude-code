@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Development utilities for erosolar-cli
+ * Development utilities for apt-cli
  * Provides common development tasks like cleaning, building, testing, and linting
  */
 

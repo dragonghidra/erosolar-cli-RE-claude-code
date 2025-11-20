@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import gradientString from 'gradient-string';
 
 /**
- * Theme system matching the Erosolar CLI aesthetics
+ * Theme system matching the APT CLI aesthetics
  */
 export const theme = {
   primary: chalk.hex('#6366F1'), // Indigo

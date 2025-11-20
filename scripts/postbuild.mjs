@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = resolve(__dirname, '..');
 const SRC_CONTRACTS_DIR = resolve(ROOT_DIR, 'src/contracts');
 const DIST_CONTRACTS_DIR = resolve(ROOT_DIR, 'dist/contracts');
-const EXECUTABLES = [resolve(ROOT_DIR, 'dist/bin/erosolar.js')];
+const EXECUTABLES = [resolve(ROOT_DIR, 'dist/bin/apt.js')];
 
 copyJsonContracts(SRC_CONTRACTS_DIR, DIST_CONTRACTS_DIR);
 markExecutables(EXECUTABLES);

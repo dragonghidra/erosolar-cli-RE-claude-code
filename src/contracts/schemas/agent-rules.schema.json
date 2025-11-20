@@ -11,7 +11,7 @@
     },
     "profile": {
       "type": "string",
-      "description": "Profile identifier the ruleset targets (e.g., general, erosolar-code)."
+      "description": "Profile identifier the ruleset targets (e.g., general, apt-code)."
     },
     "version": {
       "type": "string",

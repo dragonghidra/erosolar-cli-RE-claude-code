@@ -1,6 +1,6 @@
 # Live Updates & Spinner System Implementation
 
-This document describes the comprehensive live update system implemented in Erosolar CLI, similar to Claude Code's real-time feedback system.
+This document describes the comprehensive live update system implemented in APT CLI, similar to Claude Code's real-time feedback system.
 
 ## Overview
 

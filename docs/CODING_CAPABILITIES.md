@@ -1,6 +1,6 @@
 # Coding Capability Guide
 
-Erosolar CLI now ships a single-minded coding toolkit. Non-coding suites (DOCX/XLSX editors, cloud office connectors,
+APT CLI now ships a single-minded coding toolkit. Non-coding suites (DOCX/XLSX editors, cloud office connectors,
 or Tavily web search) were removed so every default tool strengthens repo analysis, refactoring, or delivery workflows.
 Every capability is implemented as a `CapabilityModule` and registered via `src/contracts/tools.schema.json`, so frontends
 and policies stay in sync automatically.
@@ -21,7 +21,7 @@ write_file { "path": "src/new.ts", "content": "export const x = 1;" }
 definition of a component or function from anywhere in the tree.
 
 ### Bash suite
-`execute_bash` runs commands inside `<workspace>/.erosolar/shell-sandbox` with HOME/TMP/XDG rewrites for deterministic
+`execute_bash` runs commands inside `<workspace>/.apt/shell-sandbox` with HOME/TMP/XDG rewrites for deterministic
 execution. Standard output is summarized inline so shell operations never scroll past the code you are editing.
 
 ## Delivery & Validation Loops
@@ -134,9 +134,9 @@ WebSearch { "query": "tsconfig references", "allowed_domains": ["typescriptlang.
 ```
 
 ### MCP connectors suite
-- Loads any `.mcp.json` / `.erosolar/mcp.json` definitions from the workspace or `~/.erosolar`.
+- Loads any `.mcp.json` / `.apt/mcp.json` definitions from the workspace or `~/.apt`.
 - Spawns stdio transports (child processes) via the official Model Context Protocol framing and exposes every remote tool as `mcp__<server>__<tool>`.
-- Servers can reference `${WORKSPACE_ROOT}`, `${EROSOLAR_HOME}`, or arbitrary environment variables for commands/args/env fields. Disable a server with `"disabled": true`.
+- Servers can reference `${WORKSPACE_ROOT}`, `${APT_HOME}`, or arbitrary environment variables for commands/args/env fields. Disable a server with `"disabled": true`.
 
 ```
 {

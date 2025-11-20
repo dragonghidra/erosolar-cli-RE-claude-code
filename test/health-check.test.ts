@@ -15,7 +15,7 @@ test('health-check script runs without errors on valid project', () => {
     `Expected exit code 0 or 1, got ${result.status}. Output: ${result.stdout}`);
   
   // Should contain health check output
-  assert.ok(result.stdout.includes('Erosolar CLI Comprehensive Health Check'),
+  assert.ok(result.stdout.includes('APT CLI Comprehensive Health Check'),
     'Should contain health check header');
 });
 
@@ -28,13 +28,13 @@ test('health-check script validates package.json structure', () => {
     assert.ok(packageJson[field], `package.json should have ${field} field`);
   });
   
-  // Check erosolar-specific configuration
-  assert.ok(packageJson.erosolar, 'package.json should have erosolar configuration');
-  assert.ok(packageJson.erosolar.rulebookSchema, 'package.json should have rulebook schema');
+  // Check apt-specific configuration
+  assert.ok(packageJson.apt, 'package.json should have apt configuration');
+  assert.ok(packageJson.apt.rulebookSchema, 'package.json should have rulebook schema');
 });
 
 test('health-check script validates agent rulebooks exist', () => {
-  const agentFiles = ['agents/erosolar-code.rules.json', 'agents/general.rules.json'];
+  const agentFiles = ['agents/apt-code.rules.json', 'agents/general.rules.json'];
   
   agentFiles.forEach(file => {
     assert.ok(existsSync(file), `Agent rulebook ${file} should exist`);

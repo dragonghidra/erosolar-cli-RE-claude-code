@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildAgentRulebookPrompt } from './core/agentRulebook.js';
 import type { ProfileName } from './core/agentProfiles.js';
+import { pickBrandEnv } from './core/brand.js';
 
 const PRIORITY_DOCS = ['README.md', 'package.json'];
 const RULEBOOK_DIR = 'agents';
@@ -20,9 +21,9 @@ export interface WorkspaceCaptureOptions {
 
 export function resolveWorkspaceCaptureOptions(env: NodeJS.ProcessEnv = process.env): WorkspaceCaptureOptions {
   return {
-    treeDepth: parsePositiveInt(env['EROSOLAR_CONTEXT_TREE_DEPTH']),
-    maxEntries: parsePositiveInt(env['EROSOLAR_CONTEXT_MAX_ENTRIES']),
-    docExcerptLimit: parsePositiveInt(env['EROSOLAR_CONTEXT_DOC_LIMIT']),
+    treeDepth: parsePositiveInt(pickBrandEnv(env, 'CONTEXT_TREE_DEPTH') ?? undefined),
+    maxEntries: parsePositiveInt(pickBrandEnv(env, 'CONTEXT_MAX_ENTRIES') ?? undefined),
+    docExcerptLimit: parsePositiveInt(pickBrandEnv(env, 'CONTEXT_DOC_LIMIT') ?? undefined),
   };
 }
 

@@ -1,6 +1,6 @@
 # Advanced Features Implemented from Claude Code
 
-This document outlines the advanced optimizations and features implemented in Erosolar CLI, inspired by Claude Code's architecture.
+This document outlines the advanced optimizations and features implemented in APT CLI, inspired by Claude Code's architecture.
 
 ## 🚀 **1. Streaming Responses**
 
@@ -286,12 +286,12 @@ await agent.send("prompt", false);  // streaming = false
 ## 🗂️ **Session Persistence & Autosave**
 
 ### What It Does
-Stores every conversation (system > user > assistant > tool turns) under `~/.erosolar/sessions/` so you can resume work or branch threads at any time—mirroring Claude Code's persistent workspace log.
+Stores every conversation (system > user > assistant > tool turns) under `~/.apt/sessions/` so you can resume work or branch threads at any time—mirroring Claude Code's persistent workspace log.
 
 ### Implementation
 - **Storage layer**: `src/core/sessionStore.ts`
   - Session summaries + payloads keyed by UUID
-  - 5-minute orphan cleanup + `EROSOLAR_DATA_DIR` override for tests/sandboxes
+  - 5-minute orphan cleanup + `APT_DATA_DIR` override for tests/sandboxes
 - **Preferences**: `src/core/preferences.ts`
   - Added `session` section (`autosave`, `autoResume`, `lastSessionId`)
 - **Shell UX**: `src/shell/interactiveShell.ts`
@@ -309,7 +309,7 @@ Stores every conversation (system > user > assistant > tool turns) under `~/.ero
 ## 💠 **Custom Slash Commands**
 
 ### What It Does
-Loads user-defined slash commands from `~/.erosolar/commands/*.json`—the same customization point Claude Code exposes—so operators can codify macros, playbooks, or onboarding checklists without touching TypeScript.
+Loads user-defined slash commands from `~/.apt/commands/*.json`—the same customization point Claude Code exposes—so operators can codify macros, playbooks, or onboarding checklists without touching TypeScript.
 
 ### Implementation
 - **Loader**: `src/core/customCommands.ts`
@@ -338,7 +338,7 @@ npm test
 Enable debug logging:
 ```bash
 export DEBUG_CONTEXT=1
-node dist/bin/erosolar.js
+node dist/bin/apt.js
 ```
 
 Monitor cache hits:
@@ -392,7 +392,7 @@ Potential additions:
 
 ## 📝 **Summary**
 
-Erosolar CLI now includes advanced optimizations from Claude Code:
+APT CLI now includes advanced optimizations from Claude Code:
 
 ✅ **Streaming responses** - Real-time token delivery
 ✅ **Parallel tool execution** - 3-10x faster multi-tool operations

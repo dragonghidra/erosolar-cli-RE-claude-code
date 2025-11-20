@@ -2,8 +2,8 @@
 import { existsSync, lstatSync, readFileSync, readlinkSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 
-const BIN_NAMES = ['erosolar'];
-const OWNERSHIP_MARKERS = ['erosolar', 'codex runtime ready', 'launchCli'];
+const BIN_NAMES = ['apt'];
+const OWNERSHIP_MARKERS = ['apt', 'codex runtime ready', 'launchCli'];
 
 const isGlobalInstall = process.env.npm_config_global === 'true';
 const prefix = process.env.npm_config_prefix;
@@ -47,13 +47,13 @@ function cleanCandidate(path) {
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.warn(`[erosolar] Unable to clean conflicting binary at ${path}: ${message}`);
+    console.warn(`[apt] Unable to clean conflicting binary at ${path}: ${message}`);
   }
 }
 
 function ownsLink(linkTarget) {
   const normalized = linkTarget.toLowerCase();
-  return normalized.includes('erosolar') || normalized.includes('bo-shang');
+  return normalized.includes('apt') || normalized.includes('bo-shang');
 }
 
 function containsOwnershipMarker(path) {

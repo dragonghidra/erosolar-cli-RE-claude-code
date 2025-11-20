@@ -54,7 +54,7 @@ function checkJsonFile(path, description = path) {
   }
 }
 
-console.log(`${colors.cyan}🧪 Erosolar CLI Comprehensive Health Check${colors.reset}\n`);
+console.log(`${colors.cyan}🧪 APT CLI Comprehensive Health Check${colors.reset}\n`);
 
 let hasErrors = false;
 let hasWarnings = false;
@@ -87,11 +87,11 @@ if (packageJson) {
     hasErrors = true;
   }
 
-  // Check erosolar-specific configuration
-  if (packageJson.erosolar?.rulebookSchema) {
-    logSuccess('Erosolar rulebook schema configured');
+  // Check apt-specific configuration
+  if (packageJson.apt?.rulebookSchema) {
+    logSuccess('APT rulebook schema configured');
   } else {
-    logWarning('Erosolar rulebook schema not configured in package.json');
+    logWarning('APT rulebook schema not configured in package.json');
     hasWarnings = true;
   }
 }
@@ -100,9 +100,9 @@ if (packageJson) {
 console.log(`\n${colors.magenta}🔧 TypeScript & Build${colors.reset}`);
 if (checkFileExists('dist', 'Build directory')) {
   // Check main binary
-  if (checkFileExists('dist/bin/erosolar.js', 'Main binary')) {
+  if (checkFileExists('dist/bin/apt.js', 'Main binary')) {
     // Check bin file permissions
-    const binCheck = spawnSync('ls', ['-la', 'dist/bin/erosolar.js'], { encoding: 'utf8' });
+    const binCheck = spawnSync('ls', ['-la', 'dist/bin/apt.js'], { encoding: 'utf8' });
     if (binCheck.status === 0 && binCheck.stdout.includes('-rwx')) {
       logSuccess('Binary is executable');
     } else {
@@ -118,7 +118,7 @@ if (checkFileExists('dist', 'Build directory')) {
 // Check agent rulebooks
 console.log(`\n${colors.magenta}📚 Agent Rulebooks${colors.reset}`);
 const agentFiles = [
-  { path: 'agents/erosolar-code.rules.json', name: 'Erosolar Code rulebook' },
+  { path: 'agents/apt-code.rules.json', name: 'APT Code rulebook' },
   { path: 'agents/general.rules.json', name: 'General rulebook' }
 ];
 
@@ -169,7 +169,7 @@ if (hasErrors) {
   console.log(`${colors.green}🎉 Health check passed successfully!${colors.reset}`);
   console.log(`${colors.green}✅ The CLI is ready for use${colors.reset}`);
   console.log(`\n${colors.cyan}💡 Next steps:${colors.reset}`);
-  console.log('   Run \'erosolar\' to start the CLI');
+  console.log('   Run \'apt\' to start the CLI');
   console.log('   Run \'npm test\' for full test suite');
   console.log('   Run \'npm run build\' to rebuild if needed');
   process.exit(0);

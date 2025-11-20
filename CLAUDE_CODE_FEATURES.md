@@ -1,6 +1,6 @@
 # Claude Code Features Implementation
 
-This document outlines the advanced features from Claude Code that have been successfully implemented in Erosolar CLI.
+This document outlines the advanced features from Claude Code that have been successfully implemented in APT CLI.
 
 ## ✅ Completed Features
 
@@ -126,7 +126,7 @@ This document outlines the advanced features from Claude Code that have been suc
 - Automatic autosave after every assistant response (enabled by default)
 - `/sessions list|save|load|delete|new|autosave|clear` command set
 - Persistent resume across CLI restarts (remembers last session ID per profile)
-- Manual snapshots stored in `~/.erosolar/sessions/<id>.json`
+- Manual snapshots stored in `~/.apt/sessions/<id>.json`
 
 ### 5. Custom Slash Commands
 **Status:** ✅ Fully Implemented
@@ -136,7 +136,7 @@ This document outlines the advanced features from Claude Code that have been suc
 - `README.md` - Usage docs and JSON schema
 
 **Features:**
-- Drop JSON definitions into `~/.erosolar/commands/` to register `/standup`, `/deploy`, etc.
+- Drop JSON definitions into `~/.apt/commands/` to register `/standup`, `/deploy`, etc.
 - Template variables: `{{input}}`, `{{workspace}}`, `{{profile}}`, `{{provider}}`, `{{model}}`
 - Commands show up in the slash preview menu with "(custom)" suffixes
 - Execution path matches normal prompts (respecting tools, streaming, reasoning toggles)
@@ -176,7 +176,7 @@ All new tools have been integrated into the tool registry and schema:
    - Centralized tool metadata
    - Auto-generated documentation
 
-## 🚀 Benefits for Erosolar CLI Users
+## 🚀 Benefits for APT CLI Users
 
 ### 1. Enhanced Task Management
 - Agents can now organize complex multi-step work
@@ -258,8 +258,8 @@ To continue implementing Claude Code features:
 
 ## 🏗️ Architecture Compatibility
 
-The implemented features follow Erosolar CLI's existing architecture:
-- ✅ Compatible with profile system (general, erosolar-code)
+The implemented features follow APT CLI's existing architecture:
+- ✅ Compatible with profile system (general, apt-code)
 - ✅ Works with all provider plugins
 - ✅ Integrates with tool permission system
 - ✅ Follows capability module pattern
@@ -269,7 +269,7 @@ The implemented features follow Erosolar CLI's existing architecture:
 ## 📝 Version Information
 
 - **Implementation Date:** November 18, 2025
-- **Erosolar CLI Version:** 1.0.5+
+- **APT CLI Version:** 1.0.5+
 - **Claude Code Reference:** Sonnet 4.5 (2025-01-29)
 - **Files Modified:** 13 new files, 2 existing files updated
 - **Lines of Code Added:** ~800 LOC

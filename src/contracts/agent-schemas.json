@@ -2,7 +2,7 @@
   "$schema": "./schemas/agent-schemas.schema.json",
   "contractVersion": "1.0.0",
   "version": "2024-11-24",
-  "label": "Erosolar CLI Agent Configuration Schema",
+  "label": "APT CLI Agent Configuration Schema",
   "description": "Centralized configuration for all agents, models, providers, and capabilities",
 
   "providers": [
@@ -58,7 +58,7 @@
       "id": "gpt-5.1-codex",
       "label": "gpt-5.1-codex",
       "provider": "openai",
-      "description": "Optimized for Erosolar Code with the latest coding weights from OpenAI.",
+      "description": "Optimized for APT Code with the latest coding weights from OpenAI.",
       "reasoningEffort": "medium",
       "capabilities": ["chat", "reasoning", "tools", "streaming"]
     },
@@ -182,7 +182,7 @@
   "profiles": [
     {
       "name": "general",
-      "label": "Erosolar",
+      "label": "APT",
       "description": "General-purpose operator with balanced reasoning across research, planning, writing, and coding tasks.",
       "defaultProvider": "openai",
       "defaultModel": "gpt-5.1",
@@ -195,7 +195,7 @@
         "file": "agents/general.rules.json",
         "version": "2024-11-24",
         "contractVersion": "1.0.0",
-        "description": "Structured rules governing the balanced Erosolar profile."
+        "description": "Structured rules governing the balanced APT profile."
       },
       "metadata": {
         "primaryUseCase": "general-purpose",
@@ -203,8 +203,8 @@
       }
     },
     {
-      "name": "erosolar-code",
-      "label": "Erosolar Code",
+      "name": "apt-code",
+      "label": "APT Code",
       "description": "OpenAI-tuned coding specialist optimized for rapid edits with deterministic grounding.",
       "defaultProvider": "openai",
       "defaultModel": "gpt-5.1-codex",
@@ -212,7 +212,7 @@
         "type": "rulebook"
       },
       "rulebook": {
-        "file": "agents/erosolar-code.rules.json",
+        "file": "agents/apt-code.rules.json",
         "version": "2024-11-24",
         "contractVersion": "1.0.0",
         "description": "Deterministic coding workflow guardrails."
@@ -303,6 +303,6 @@
   "metadata": {
     "schemaVersion": "1.0.0",
     "lastUpdated": "2024-11-24",
-    "description": "This is the single source of truth for all agent configurations in the Erosolar CLI"
+    "description": "This is the single source of truth for all agent configurations in the APT CLI"
   }
 }

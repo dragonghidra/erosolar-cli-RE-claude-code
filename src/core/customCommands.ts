@@ -1,12 +1,10 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { homedir } from 'node:os';
 import type { ProfileName } from '../config.js';
 import type { ProviderId } from './types.js';
+import { resolveCommandsDir } from './brand.js';
 
-const dataRoot = process.env['EROSOLAR_DATA_DIR']?.trim() || join(homedir(), '.erosolar');
-const defaultCommandsDir =
-  process.env['EROSOLAR_COMMANDS_DIR']?.trim() || join(dataRoot, 'commands');
+const defaultCommandsDir = resolveCommandsDir();
 
 export interface LoadedCustomCommand {
   command: string;

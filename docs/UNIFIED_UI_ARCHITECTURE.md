@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Unified UI Layer is a comprehensive orchestration system that coordinates all UI components in the Erosolar CLI. It provides sophisticated overlay rendering, status management, animations, interrupt handling, and telemetry collection through a single, cohesive interface.
+The Unified UI Layer is a comprehensive orchestration system that coordinates all UI components in the APT CLI. It provides sophisticated overlay rendering, status management, animations, interrupt handling, and telemetry collection through a single, cohesive interface.
 
 ## Architecture Components
 
@@ -426,4 +426,4 @@ Potential improvements for the unified UI system:
 
 ## Conclusion
 
-The Unified UI Layer provides a robust, performant, and extensible foundation for terminal UI in the Erosolar CLI. Its modular architecture, comprehensive telemetry, and adaptive performance ensure a smooth user experience across diverse terminal environments and system capabilities.
+The Unified UI Layer provides a robust, performant, and extensible foundation for terminal UI in the APT CLI. Its modular architecture, comprehensive telemetry, and adaptive performance ensure a smooth user experience across diverse terminal environments and system capabilities.

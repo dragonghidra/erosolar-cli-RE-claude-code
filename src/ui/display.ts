@@ -317,7 +317,7 @@ export class Display {
       state.width
     );
     const banner = this.buildBanner(
-      'Erosolar CLI',
+      'APT CLI',
       state.width,
       lines,
       this.buildBannerOptions(state.version)
@@ -667,7 +667,7 @@ export class Display {
       state.workingDir,
       width
     );
-    const banner = this.buildBanner('Erosolar CLI', width, lines, this.buildBannerOptions(state.version));
+    const banner = this.buildBanner('APT CLI', width, lines, this.buildBannerOptions(state.version));
     const startLine = this.stdoutTracker.totalLines;
     this.withOutput(() => {
       console.log(banner);

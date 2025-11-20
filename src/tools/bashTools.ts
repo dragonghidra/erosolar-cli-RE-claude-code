@@ -1,9 +1,11 @@
 import { exec } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import type { ToolDefinition } from '../core/toolRuntime.js';
 import { createBackgroundBashTools, startBackgroundShell } from './backgroundBashTools.js';
+import { BRAND_DOT_DIR, LEGACY_DOT_DIR, pickBrandEnv } from '../core/brand.js';
 
 const execAsync = promisify(exec);
 const sandboxCache = new Map<string, Promise<SandboxPaths>>();
@@ -111,7 +113,7 @@ export async function buildSandboxEnv(
   workingDir: string,
   options?: SandboxEnvOptions
 ): Promise<NodeJS.ProcessEnv> {
-  const envPreference = process.env['EROSOLAR_PRESERVE_HOME'];
+  const envPreference = pickBrandEnv(process.env, 'PRESERVE_HOME');
   const preserveHome =
     envPreference === '1'
       ? true
@@ -122,6 +124,9 @@ export async function buildSandboxEnv(
 
   const env: NodeJS.ProcessEnv = {
     ...process.env,
+    APT_SANDBOX_ROOT: paths.root,
+    APT_SANDBOX_HOME: paths.home,
+    APT_SANDBOX_TMP: paths.tmp,
     EROSOLAR_SANDBOX_ROOT: paths.root,
     EROSOLAR_SANDBOX_HOME: paths.home,
     EROSOLAR_SANDBOX_TMP: paths.tmp,
@@ -152,7 +157,9 @@ async function ensureSandboxPaths(workingDir: string): Promise<SandboxPaths> {
 }
 
 async function createSandboxPaths(workingDir: string): Promise<SandboxPaths> {
-  const root = join(workingDir, '.erosolar', 'shell-sandbox');
+  const preferredRoot = join(workingDir, BRAND_DOT_DIR, 'shell-sandbox');
+  const legacyRoot = join(workingDir, LEGACY_DOT_DIR, 'shell-sandbox');
+  const root = existsSync(preferredRoot) || !existsSync(legacyRoot) ? preferredRoot : legacyRoot;
   const home = join(root, 'home');
   const cache = join(root, 'cache');
   const config = join(root, 'config');

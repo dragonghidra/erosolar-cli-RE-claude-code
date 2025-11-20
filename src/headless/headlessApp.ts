@@ -9,6 +9,7 @@ import { hasAgentProfile, listAgentProfiles } from '../core/agentProfiles.js';
 import type { AgentEventUnion, CapabilityManifest } from '../contracts/v1/agent.js';
 import { createAgentController } from '../runtime/agentController.js';
 import { resolveWorkspaceCaptureOptions, buildWorkspaceContext } from '../workspace.js';
+import { resolveProfileOverride } from '../core/brand.js';
 
 interface ParsedHeadlessArgs {
   profile?: string;
@@ -206,8 +207,8 @@ function parseHeadlessArgs(argv: string[]): ParsedHeadlessArgs {
 }
 
 function resolveProfile(candidate?: string): ProfileName {
-  const envOverride = process.env['EROSOLAR_PROFILE']?.trim();
-  const desired = candidate?.trim() || envOverride || 'erosolar-code';
+  const envOverride = resolveProfileOverride();
+  const desired = candidate?.trim() || envOverride || 'apt-code';
   if (hasAgentProfile(desired as ProfileName)) {
     return desired as ProfileName;
   }

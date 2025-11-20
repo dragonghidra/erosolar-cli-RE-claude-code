@@ -2,7 +2,7 @@
 
 ## What Was Implemented
 
-A comprehensive live update system for the Erosolar CLI that provides real-time feedback during AI processing, similar to Claude Code's implementation.
+A comprehensive live update system for the APT CLI that provides real-time feedback during AI processing, similar to Claude Code's implementation.
 
 ## Key Features
 
@@ -194,7 +194,7 @@ No manual configuration needed - it just works!
 
 ## Comparison with Claude Code
 
-| Feature | Claude Code | Erosolar CLI | Status |
+| Feature | Claude Code | APT CLI | Status |
 |---------|-------------|--------------|--------|
 | Persistent spinner | ✅ | ✅ | ✅ Implemented |
 | Live thoughts | ✅ | ✅ | ✅ Implemented |

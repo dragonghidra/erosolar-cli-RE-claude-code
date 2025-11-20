@@ -58,6 +58,6 @@ Used to confirm refresh() rescans directories.
     repository.refresh();
     const refreshed = repository.listSkills();
     assert.equal(refreshed.length, 1);
-    assert.equal(refreshed[0]?.slug, 'transient');
+    assert.equal(refreshed[0]?.slug, 'transient-skill');
   });
 });

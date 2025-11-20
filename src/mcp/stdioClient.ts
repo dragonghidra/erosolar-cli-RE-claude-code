@@ -85,8 +85,8 @@ export class McpStdioClient {
         },
       },
       clientInfo: {
-        name: 'Erosolar CLI',
-        version: process.env['EROSOLAR_VERSION'] ?? 'dev',
+        name: 'APT CLI',
+        version: process.env['APT_VERSION'] ?? process.env['EROSOLAR_VERSION'] ?? 'dev',
       },
     });
     await this.sendNotification('notifications/initialized', {});

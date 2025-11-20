@@ -1,9 +1,9 @@
 {
   "$schema": "./schemas/tool-selection.schema.json",
   "contractVersion": "1.0.0",
-  "profile": "erosolar-cli",
+  "profile": "apt-cli",
   "version": "2024.07.17",
-  "label": "Erosolar CLI tool manifest",
+  "label": "APT CLI tool manifest",
   "description": "Canonical list of capability suites, plugin bindings, and scope declarations for the default runtime.",
   "options": [
     {
@@ -104,6 +104,15 @@
       "category": "analysis",
       "scopes": ["analysis:dependency", "analysis:security"],
       "pluginIds": ["tool.dependency.security"]
+    },
+    {
+      "id": "pentest",
+      "label": "Penetration testing",
+      "description": "Network and web reconnaissance plus defensive baselines (nmap/nuclei/ffuf powered).",
+      "defaultEnabled": false,
+      "category": "security",
+      "scopes": ["analysis:security", "process:exec"],
+      "pluginIds": ["tool.security.pentest"]
     },
     {
       "id": "testing",

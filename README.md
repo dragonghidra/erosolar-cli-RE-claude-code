@@ -1,4 +1,6 @@
-# erosolar-cli-RE-claude-code
+# apt-cli-RE-claude-code
+
+APT (formerly Erosolar) now ships as `apt` with config/state under `~/.apt` (legacy `~/.erosolar` is still honored). The CLI also includes a penetration-testing suite (nmap/nuclei/ffuf/gobuster) for defensive baselines and red-team recon—enable the `Penetration testing` tool option via `/tools` to use it.
 
 This RE, after manually implementation the correct strategy, is incredibly boring because 100% of edits work properly afterwards, achieving full Claude Code parity in a modular way with minimal human intervention needed.
 

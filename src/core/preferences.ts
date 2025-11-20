@@ -1,10 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { homedir } from 'node:os';
 import { join } from 'node:path';
 import type { ProviderId, ReasoningEffortLevel } from './types.js';
 import type { ProfileName } from '../config.js';
+import { resolveDataDir } from './brand.js';
 
-const CONFIG_DIR = join(homedir(), '.erosolar');
+const CONFIG_DIR = resolveDataDir();
 const SETTINGS_PATH = join(CONFIG_DIR, 'settings.json');
 const CURRENT_VERSION = 2;
 

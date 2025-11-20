@@ -5,8 +5,8 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { ConversationMessage } from '../src/core/types.js';
 
-const tempDir = mkdtempSync(join(tmpdir(), 'erosolar-session-store-'));
-process.env['EROSOLAR_DATA_DIR'] = tempDir;
+const tempDir = mkdtempSync(join(tmpdir(), 'apt-session-store-'));
+process.env['APT_DATA_DIR'] = tempDir;
 
 const {
   saveSessionSnapshot,
@@ -19,7 +19,7 @@ const {
 } = await import('../src/core/sessionStore.js');
 
 test.after(() => {
-  delete process.env['EROSOLAR_DATA_DIR'];
+  delete process.env['APT_DATA_DIR'];
   rmSync(tempDir, { recursive: true, force: true });
 });
 

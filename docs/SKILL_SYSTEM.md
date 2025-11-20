@@ -1,6 +1,6 @@
 # Skill System Overview
 
-Erosolar CLI now mirrors Claude Code's **Skill** tooling so you can bundle reusable workflows, policies, and domain
+APT CLI now mirrors Claude Code's **Skill** tooling so you can bundle reusable workflows, policies, and domain
 knowledge inside `SKILL.md` packages. Skills are automatically discovered and exposed through the new `ListSkills` and
 `Skill` tools plus a `/skills` slash command (see README).
 
@@ -10,12 +10,12 @@ The CLI scans these locations (in order of precedence):
 
 1. `<workspace>/skills/**/SKILL.md`
 2. `<workspace>/.claude/skills/**/SKILL.md`
-3. `<workspace>/.erosolar/skills/**/SKILL.md`
+3. `<workspace>/.apt/skills/**/SKILL.md`
 4. Any nested directory under the workspace that contains a `SKILL.md` (so Claude Code plugins checked into the repo work
    out of the box, e.g. `claude-code/plugins/plugin-dev/skills/*/SKILL.md`)
 5. `~/.claude/skills/**/SKILL.md`
-6. `~/.erosolar/skills/**/SKILL.md`
-7. Any directory listed in `EROSOLAR_SKILLS_DIRS` (use `:` as the separator, `;` on Windows)
+6. `~/.apt/skills/**/SKILL.md`
+7. Any directory listed in `APT_SKILLS_DIRS` (use `:` as the separator, `;` on Windows)
 
 Each skill directory may also contain optional `references/`, `scripts/`, and `assets/` folders. The loader emits a
 resource inventory so the model knows which supporting files exist before reading them.

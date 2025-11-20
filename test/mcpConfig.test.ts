@@ -34,6 +34,7 @@ test('loadMcpServers discovers workspace .mcp.json definitions', async () => {
 
     assert.equal(servers.length, 1);
     const server = servers[0];
+    assert.ok(server);
     assert.equal(server.id, 'filesystem');
     assert.equal(server.command, 'npx');
     assert.deepEqual(server.args, ['-y', '@modelcontextprotocol/server-filesystem', root]);

@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { loadCustomSlashCommands, buildCustomCommandPrompt } from '../src/core/customCommands.js';
 
 test('custom command loader reads JSON definitions', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'erosolar-custom-commands-'));
+  const dir = mkdtempSync(join(tmpdir(), 'apt-custom-commands-'));
   const filePath = join(dir, 'standup.json');
   writeFileSync(
     filePath,

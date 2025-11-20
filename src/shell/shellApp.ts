@@ -29,6 +29,7 @@ import { LiveStatusTracker, type LiveStatusTone } from './liveStatus.js';
 import { buildInteractiveSystemPrompt } from './systemPrompt.js';
 import { ShellUIAdapter } from '../ui/ShellUIAdapter.js';
 import { stdout } from 'node:process';
+import { resolveProfileOverride } from '../core/brand.js';
 
 export interface LaunchShellOptions {
   enableProfileSelection?: boolean;
@@ -43,7 +44,7 @@ export async function launchShell(
 ): Promise<void> {
   try {
     const { profileOverride, promptArgs } = parseLaunchArguments(process.argv.slice(2));
-    const envProfileOverride = process.env['EROSOLAR_PROFILE']?.trim() || null;
+    const envProfileOverride = resolveProfileOverride();
     const allowProfileSelection = Boolean(options.enableProfileSelection);
     const availableProfiles = listAgentProfiles();
     const rawSavedProfile = allowProfileSelection ? loadActiveProfilePreference() : null;
@@ -238,7 +239,7 @@ function resolveLaunchProfile(input: ProfileResolutionInput): ProfileName {
     const resolved = matchProfile(input.envOverride, input.availableProfiles);
     if (!resolved) {
       throw new Error(
-        `Unknown agent profile "${input.envOverride}" provided via EROSOLAR_PROFILE.`
+        `Unknown agent profile "${input.envOverride}" provided via APT_PROFILE.`
       );
     }
     return resolved;

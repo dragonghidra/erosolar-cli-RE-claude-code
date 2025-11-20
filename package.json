@@ -1,8 +1,8 @@
 {
-  "name": "erosolar-cli",
+  "name": "apt-cli",
   "version": "1.0.6",
-  "description": "Modular Erosolar CLI with general + Erosolar Code profiles, pluggable providers, and guardrails encoded via src/contracts/schemas/agent-rules.schema.json",
-  "main": "dist/bin/erosolar.js",
+  "description": "Modular APT CLI with general + APT Code profiles, pluggable providers, and guardrails encoded via src/contracts/schemas/agent-rules.schema.json",
+  "main": "dist/bin/apt.js",
   "type": "module",
   "files": [
     "dist",
@@ -14,7 +14,7 @@
     "scripts/complexity-validation.mjs"
   ],
   "bin": {
-    "erosolar": "dist/bin/erosolar.js"
+    "apt": "dist/bin/apt.js"
   },
   "scripts": {
     "preinstall": "node scripts/preinstall-clean-bins.mjs",
@@ -23,9 +23,9 @@
     "build:watch": "tsc --watch",
     "prepare": "npm run build",
     "postbuild": "node scripts/postbuild.mjs",
-    "dev": "node --loader ts-node/esm src/bin/erosolar.ts",
-    "dev:watch": "node --watch --loader ts-node/esm src/bin/erosolar.ts",
-    "start": "node dist/bin/erosolar.js",
+    "dev": "node --loader ts-node/esm src/bin/apt.ts",
+    "dev:watch": "node --watch --loader ts-node/esm src/bin/apt.ts",
+    "start": "node dist/bin/apt.js",
     "test": "node --loader ts-node/esm --test test/*.test.ts",
     "test:watch": "node --watch --loader ts-node/esm --test test/*.test.ts",
     "lint": "eslint src/**/*.ts --max-warnings 0",
@@ -36,7 +36,7 @@
     "complexity-check:legacy": "npm run lint && npm run type-check",
     "quality-gate": "npm run complexity-check && npm run health-check && npm run type-check"
   },
-  "erosolar": {
+  "apt": {
     "rulebookSchema": "src/contracts/schemas/agent-rules.schema.json"
   },
   "keywords": [
@@ -47,15 +47,15 @@
     "agent",
     "productivity"
   ],
-  "author": "Erosolar AI <support@ero.solar>",
+  "author": "APT Security <support@apt.dev>",
   "license": "MIT",
-  "homepage": "https://github.com/dragonghidra/erosolar-cli-RE-claude-code#readme",
+  "homepage": "https://github.com/dragonghidra/apt-cli-RE-claude-code#readme",
   "bugs": {
-    "url": "https://github.com/dragonghidra/erosolar-cli-RE-claude-code/issues"
+    "url": "https://github.com/dragonghidra/apt-cli-RE-claude-code/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dragonghidra/erosolar-cli-RE-claude-code.git"
+    "url": "git+https://github.com/dragonghidra/apt-cli-RE-claude-code.git"
   },
   "engines": {
     "node": ">=20.0.0"

@@ -15,7 +15,7 @@ export function createSkillTools(options: SkillToolOptions): ToolDefinition[] {
     {
       name: 'ListSkills',
       description:
-        'List Claude Code compatible skills discovered in the workspace, ~/.claude/skills, and ~/.erosolar/skills directories.',
+        'List Claude Code compatible skills discovered in the workspace, ~/.claude/skills, and ~/.apt/skills directories.',
       parameters: {
         type: 'object',
         properties: {

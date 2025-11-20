@@ -28,7 +28,7 @@ const SECRET_DEFINITIONS: SecretDefinition[] = [
   {
     id: 'OPENAI_API_KEY',
     label: 'OpenAI API Key',
-    description: 'Required to run OpenAI GPT and Erosolar Code models.',
+    description: 'Required to run OpenAI GPT and APT Code models.',
     envVar: 'OPENAI_API_KEY',
     providers: ['openai'],
   },

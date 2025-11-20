@@ -1,15 +1,16 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
-import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { homedir } from 'node:os';
 import type { McpServerConfig, RawMcpServerDefinition } from './types.js';
+import { pickBrandEnv, resolveDataDir } from '../core/brand.js';
 
 interface LoadOptions {
   workingDir: string;
   env: Record<string, string | undefined>;
 }
 
-const DEFAULT_FILES = ['.mcp.json', join('.erosolar', 'mcp.json')];
-const DEFAULT_DIRECTORIES = [join('.erosolar', 'mcp.d')];
+const DEFAULT_FILES = ['.mcp.json', join('.apt', 'mcp.json'), join('.erosolar', 'mcp.json')];
+const DEFAULT_DIRECTORIES = [join('.apt', 'mcp.d'), join('.erosolar', 'mcp.d')];
 
 export async function loadMcpServers(options: LoadOptions): Promise<McpServerConfig[]> {
   const candidates = await discoverConfigFiles(options);
@@ -42,8 +43,9 @@ export async function loadMcpServers(options: LoadOptions): Promise<McpServerCon
 
 async function discoverConfigFiles(options: LoadOptions): Promise<string[]> {
   const files = new Set<string>();
-  const home = homedir();
-  const envOverride = options.env['EROSOLAR_MCP_CONFIG'];
+  const envOverride =
+    pickBrandEnv(options.env as NodeJS.ProcessEnv, 'MCP_CONFIG') ??
+    pickBrandEnv(process.env, 'MCP_CONFIG');
   if (envOverride) {
     for (const path of envOverride.split(/[:,;]/)) {
       const trimmed = path.trim();
@@ -52,8 +54,9 @@ async function discoverConfigFiles(options: LoadOptions): Promise<string[]> {
       }
     }
   }
-
-  const searchRoots = [options.workingDir, home];
+  const brandHome = resolveDataDir({ ...process.env, ...options.env });
+  const userHome = homedir();
+  const searchRoots = [options.workingDir, brandHome, userHome];
   for (const root of searchRoots) {
     for (const name of DEFAULT_FILES) {
       const candidate = resolve(root, name);
@@ -131,7 +134,12 @@ function normalizeServerDefinition(
       return null;
     }
     const args = Array.isArray(raw.args)
-      ? raw.args.map((value) => expandTemplate(String(value ?? ''), options, source)).filter(Boolean)
+      ? raw.args
+          .map((value) => {
+            const expanded = expandTemplate(String(value ?? ''), options, source);
+            return expanded || String(value ?? '').trim();
+          })
+          .filter(Boolean)
       : [];
 
     const env = normalizeEnv(raw.env, options, source);
@@ -177,9 +185,7 @@ function normalizeEnv(
       continue;
     }
     const expanded = expandTemplate(value, options, source);
-    if (expanded) {
-      record[key] = expanded;
-    }
+    record[key] = expanded || value;
   }
   return record;
 }
@@ -189,19 +195,19 @@ function expandTemplate(value: string, options: LoadOptions, file: string): stri
     return '';
   }
   const workspace = resolve(options.workingDir);
-  const erosolarHome = join(homedir(), '.erosolar');
+  const aptHome = resolveDataDir({ ...process.env, ...options.env });
   const replacements = {
     WORKSPACE_ROOT: workspace,
     PROJECT_DIR: workspace,
     CLAUDE_PROJECT_DIR: workspace,
-    EROSOLAR_HOME: erosolarHome,
+    APT_HOME: aptHome,
     HOME: homedir(),
     MCP_CONFIG_DIR: resolve(file, '..'),
   } as const;
 
   type ReplacementKey = keyof typeof replacements;
 
-  return value.replace(/\$\{([^}]+)\}/g, (_match, token: string): string => {
+  const replaced = value.replace(/\$\{([^}]+)\}/g, (_match, token: string): string => {
     const key = token.trim();
     if (Object.prototype.hasOwnProperty.call(replacements, key)) {
       const replacementKey = key as ReplacementKey;
@@ -216,6 +222,24 @@ function expandTemplate(value: string, options: LoadOptions, file: string): stri
     }
     return '';
   });
+
+  if (replaced.trim()) {
+    return replaced;
+  }
+
+  const tokenMatch = value.match(/^\$\{\s*([^\}]+)\s*\}$/);
+  if (tokenMatch) {
+    const key = (tokenMatch[1] ?? '').trim();
+    const direct =
+      (replacements as Record<string, string>)[key] ??
+      options.env[key]?.toString() ??
+      (process.env[key] ?? '').toString();
+    if (direct.trim()) {
+      return direct.trim();
+    }
+  }
+
+  return replaced.trim();
 }
 
 async function fileExists(path: string): Promise<boolean> {
